@@ -1,0 +1,19 @@
+{
+  "name": "lct-server",
+  "version": "0.1.0",
+  "description": "Server Leva me contigo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ranguna/pdm-backend.git"
+  },
+  "author": "Team-M",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Ranguna/pdm-backend/issues"
+  },
+  "homepage": "https://github.com/Ranguna/pdm-backend#readme"
+}
