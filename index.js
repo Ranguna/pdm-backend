@@ -1,6 +1,5 @@
 
 const express = require('express');
-const {DB} = require("./DB/dbconfs");
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
