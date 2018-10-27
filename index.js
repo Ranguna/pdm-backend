@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = 4020;
 
-const {dbRouter} = require("./DB/dbconfs");
+const {dbRouter} = require("./routes/dbRouter");
 
 // Express initializations
 app.use(logger('dev'));
