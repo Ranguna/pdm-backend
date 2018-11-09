@@ -2,6 +2,7 @@
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const userRouter = require('./routes/userRouter');
 
 const app = express();
 const PORT = 4020;
@@ -15,6 +16,8 @@ app.use(bodyParser.json());
 
 // routes
 app.use("/db",dbRouter);
+
+app.use("/user", userRouter);
 
 // Express routing
 app.get("/ping",(req,res)=>{
