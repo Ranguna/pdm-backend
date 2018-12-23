@@ -12,7 +12,6 @@ const PORT = 4020;
 
 // import middlewares
 const {auth_isLogged, auth_isNotLogged} = require("./middlewares/auth/session");
-const {account_isActive} = require("./middlewares/auth/account");
 
 
 // import routes
@@ -69,8 +68,8 @@ app.post("/signup", auth_isNotLogged, function(req, res, next) {
 	// console.log("calling");
 	passport.authenticate('local-signup', function(err, user) {
 		// console.log("resis",err,user);
-		if (err){
-			return res.send(err);}
+		if (err)
+			return res.send(err);
 		if (!user)
 			return res.send(passportError.userOrPasswordInvalid);
 
