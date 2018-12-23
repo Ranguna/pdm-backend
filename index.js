@@ -65,11 +65,9 @@ app.post("/signup", auth_isNotLogged, function(req, res, next) {
 			return res.send(passportError.userOrPasswordInvalid);
 
 		req.logIn(user, function(err) {
-			console.log("hehre",err);
 			if(err)
 				return res.send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
-			console.log("wiwi")
-			console.log(user)
+			
 			return res.send({code:1, message:"User logged.", username:user[dbColumns.latest.Users.USERNAME]});
 		});
 	})(req, res, next);

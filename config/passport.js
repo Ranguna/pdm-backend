@@ -43,9 +43,7 @@ module.exports = function(passport) {
 
 		// see if user exists
 		dbDriver.user.getByUsername(username,(err, user)=>{
-			console.log("gubid");
 			if(err){
-				console.log("yeperor");
 				return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 			}
 			
@@ -56,11 +54,7 @@ module.exports = function(passport) {
 			bcrypt.hash(password,11, (err, hpass)=>{
 				if(err)
 					return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
-				console.log("Will careatusre");
-				console.log(username,
-					hpass,
-					(new Date()).getTime(),
-					(new Date()).getTime());
+
 				// create user
 				db.run(`INSERT INTO ${dbColumns.latest.Users._NAME} (${dbColumns.latest.Users.USERNAME}, ${dbColumns.latest.Users.PASS}, ${dbColumns.latest.Users.DATACRI}, ${dbColumns.latest.Users.DATAMOD}) VALUES (?, ?, ?, ?)`,
 					[
@@ -70,7 +64,6 @@ module.exports = function(passport) {
 						(new Date()).getTime()
 					],
 					function(err){
-						console.log("cret")
 						if(err){
 							return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 						}

@@ -2,7 +2,6 @@ const {passportError} = require("../../errors/codes")
 
 function auth_isLogged(req, res, next) {
     // if user is authenticated in the session, carry on
-	console.log("wiwiwi")
 	if (req.isAuthenticated()){
 		// console.log("is logged");
 		return next();
@@ -16,7 +15,6 @@ function auth_isLogged(req, res, next) {
 
 function auth_isNotLogged(req, res, next) {
     // if user is not authenticated in the session, carry on
-	console.log("wiwiwi2")
 	if (!req.isAuthenticated()){
 		return next();
 	}
