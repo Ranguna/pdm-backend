@@ -22,6 +22,7 @@ dbRouter.post("/initDB", (req,res)=>{
 				"foto TEXT DEFAULT '',"+
 				"data_criacao INTEGER NOT NULL,"+
 				"data_modificacao INTEGER NOT NULL,"+
+				"data_desativacao INTEGER DEFAULT -1,"+
 				"CONSTRAINT unique_users UNIQUE (id),"+
 				"CONSTRAINT unique_username UNIQUE (username)"+
 			")");

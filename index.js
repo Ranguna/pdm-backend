@@ -12,6 +12,7 @@ const PORT = 4020;
 
 // import middlewares
 const {auth_isLogged, auth_isNotLogged} = require("./middlewares/auth/session");
+const {account_isActive} = require("./middlewares/auth/account");
 
 
 // import routes
@@ -19,7 +20,7 @@ const dbRouter = require("./routes/dbRouter");
 
 const {leakInternalErrors} = require("./config/globals");
 const {passportError} = require("./errors/codes");
-const {dbColumns} = require('./DB/dbconfs');
+const {dbColumns, dbDriver} = require('./DB/dbconfs');
 
 // Express initializations
 app.use(logger('dev'));
@@ -48,10 +49,19 @@ app.post('/login', auth_isNotLogged, function(req, res, next) {
 		if (!user)
 			return res.send(passportError.userNotFound);
 		
-		req.logIn(user, function(err) {
+		dbDriver.user.isActiveUsername(user[dbColumns.latest.Users.USERNAME],(err, active)=>{
 			if(err)
-				return res.send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
-			return res.send({code:1, message:"User logged.", username:user[dbColumns.latest.Users.USERNAME]});
+				return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
+			
+			if(!active)
+				return res.status(400).send(passportError.accountDeactivated);
+
+			req.logIn(user, function(err) {
+				if(err)
+					return res.send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
+
+				return res.send({code:1, message:"User logged.", username:user[dbColumns.latest.Users.USERNAME]});
+			});
 		});
 	})(req, res, next);
 });
@@ -68,9 +78,29 @@ app.post("/signup", auth_isNotLogged, function(req, res, next) {
 			if(err)
 				return res.send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 			
-			return res.send({code:1, message:"User logged.", username:user[dbColumns.latest.Users.USERNAME]});
+			return res.send({code:1, message:"User logged.", username: user[dbColumns.latest.Users.USERNAME]});
 		});
 	})(req, res, next);
+});
+app.post("/logout", auth_isLogged, (req, res)=>{
+	req.logout();
+	res.send({code:1, message:"User logged out"});
+});
+app.get("/checkSession", auth_isLogged, (req,res)=>{
+	res.send({code:1, message:"User logged", username: req.user[dbColumns.latest.Users.USERNAME]});
+});
+app.delete("/deactivateSelfAccount", auth_isLogged, (req, res)=>{
+	let username = req.user[dbColumns.latest.Users.USERNAME];
+	dbDriver.user.removeByUsername(username,(err, changes)=>{
+		if(err)
+			return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
+		
+		if(changes == 0)
+			return res.send({code: 2, message: "User was not deactivated."});
+			
+		req.logOut();
+		return res.send({code: 1, message: "User has been loggout out and deactivated."});
+	});
 });
 
 // ping route

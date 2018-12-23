@@ -51,24 +51,17 @@ module.exports = function(passport) {
 				done(passportError.userAlreadyExists);
 			
 			// calculate password hash
-			bcrypt.hash(password,11, (err, hpass)=>{
+			bcrypt.hash(password, 11, (err, hpass)=>{
 				if(err)
 					return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 
 				// create user
-				db.run(`INSERT INTO ${dbColumns.latest.Users._NAME} (${dbColumns.latest.Users.USERNAME}, ${dbColumns.latest.Users.PASS}, ${dbColumns.latest.Users.DATACRI}, ${dbColumns.latest.Users.DATAMOD}) VALUES (?, ?, ?, ?)`,
-					[
-						username,
-						hpass,
-						(new Date()).getTime(),
-						(new Date()).getTime()
-					],
-					function(err){
-						if(err){
+				dbDriver.user.newUser(username, hpass, function(err){
+						if(err)
 							return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
-						}
-						// sqlite showld return the inserted column
-						// it cant because it's insert command is ran in the run method
+						
+						// sqlite should return the inserted column
+						// it cant because it's insert command is run on the run method
 						// what a shame..
 						return dbDriver.user.getByUsername(username,done);
 					}

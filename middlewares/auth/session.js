@@ -10,7 +10,7 @@ function auth_isLogged(req, res, next) {
 
     // if they aren't redirect them to the home page
 	// console.log("is not logged", req.url);
-    res.send(passportError.userLogged);
+    res.status(400).send(passportError.userNotLogged);
 }
 
 function auth_isNotLogged(req, res, next) {
@@ -20,7 +20,7 @@ function auth_isNotLogged(req, res, next) {
 	}
 
     // if they aren't redirect them to the home page
-    res.send(passportError.userNotLogged);
+    res.status(400).send(passportError.userLogged);
 }
 
 module.exports = {auth_isLogged, auth_isNotLogged};

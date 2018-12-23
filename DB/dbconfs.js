@@ -22,6 +22,7 @@ const dbColumns = {
 			FOTO: "foto",
 			DATACRI: "data_criacao",
 			DATAMOD: "data_modificacao",
+			DATADES: "data_desativacao",
 		},
 		Boleia: {
 			_NAME: "Boleia",
@@ -74,7 +75,18 @@ const dbColumns = {
 
 let dbDriver = {
 	user: {
-		getByUsername: (username, cb = (err, username)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+		newUser: (username, hpass, cb = (err)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			db.run(`INSERT INTO ${dbColumns.latest.Users._NAME} (${dbColumns.latest.Users.USERNAME}, ${dbColumns.latest.Users.PASS}, ${dbColumns.latest.Users.DATACRI}, ${dbColumns.latest.Users.DATAMOD}) VALUES (?, ?, ?, ?)`,
+				[
+					username,
+					hpass,
+					(new Date()).getTime(),
+					(new Date()).getTime()
+				],
+				cb
+			);
+		},
+		getByUsername: (username, cb = (err, user)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
 			if(!username)
 				return cb(dbError.usernameInvalid);
 			db.get(
@@ -83,7 +95,7 @@ let dbDriver = {
 				cb
 			);
 		},
-		getById: (id, cb = (err, id)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+		getById: (id, cb = (err, user)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
 			if(!id)
 				return cb(dbError.idInvalid);
 		
@@ -92,7 +104,53 @@ let dbDriver = {
 				[id],
 				cb
 			);
-		}
+		},
+		removeByUsername: (username, cb = (err, username)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!username)
+				return cb(dbError.usernameInvalid);
+			
+			db.run(
+				`UPDATE  ${dbColumns.latest.Users._NAME} SET ${dbColumns.latest.Users.DATADES} = ? WHERE ${dbColumns.latest.Users.USERNAME} = ?`,
+				[
+					(new Date()).getTime(),
+					username
+				],
+				function(err){
+					cb(err && err.message, this.changes);
+				}
+			);
+		},
+		removeById: (Id, cb = (err, Id)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!Id)
+				return cb(dbError.IdInvalid);
+			
+			db.run(
+				`UPDATE  ${dbColumns.latest.Users._NAME} SET ${dbColumns.latest.Users.DATADES} = ? WHERE ${dbColumns.latest.Users.ID} = ?`,
+				[
+					(new Date()).getTime(),
+					Id
+				],
+				function(err){
+					cb(err, this.changes);
+				}
+			);
+		},
+		isActiveUsername: (username, cb=(err, active)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			dbDriver.user.getByUsername(username, (err, user)=>{
+				if(err)
+					return cb(err);
+
+				return cb(null, user[dbColumns.latest.Users.DATADES] == -1);
+			});
+		},
+		isActiveId: (Id, cb=(err, active)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			dbDriver.user.getById(Id, (err, user)=>{
+				if(err)
+					return cb(err);
+					
+				return cb(null, user[dbColumns.latest.Users.DATADES] != -1);
+			});
+		},
 	}
 };
 

@@ -30,8 +30,11 @@ module.exports = {
 			string: "passport:-6",
 			message: "User is not logged."
 		},
-		
-
+		accountDeactivated: {
+			code: -0x10007,
+			string: "passport:-7",
+			message: "Denied, account is deactivated."
+		}
 	},
 	dbError: {
 		usernameInvalid: {
