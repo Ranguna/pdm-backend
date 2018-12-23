@@ -1,4 +1,4 @@
-const {passportError} = require("../../errors/codes")
+const {passportError} = require("../../errors/codes");
 
 function auth_isLogged(req, res, next) {
     // if user is authenticated in the session, carry on
