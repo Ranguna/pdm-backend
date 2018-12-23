@@ -1,37 +1,45 @@
 // dbRouter.js
 const express = require('express');
-const dbRouter = new express.Router();
+const dbRouter = express.Router();
 
-const {db} = require('../DB/lct.db');
+const {db} = require('../DB/dbconfs');
 
 dbRouter.post("/initDB", (req,res)=>{
 	try {
+		// I would not use sqlite on an actual real world project
 		db.serialize(()=>{
+			db.run("CREATE TABLE IF NOT EXISTS VERSION ("+
+				"version INTEGER PRIMARY KEY NOT NULL,"+
+				"current NUMERIC DEFAULT 0"+
+			")");
 			db.run("CREATE TABLE IF NOT EXISTS Users ("+
 				"id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+				"username TEXT NOT NULL,"+
 				"nome TEXT DEFAULT '',"+
+				"password TEXT NOT NULL,"+
 				"data_nascimento INTEGER DEFAULT -1,"+
 				"data_carta INTEGER DEFAULT -1,"+
-				"foto TEXT NOT NULL"+
+				"foto TEXT DEFAULT '',"+
 				"data_criacao INTEGER NOT NULL,"+
 				"data_modificacao INTEGER NOT NULL,"+
-				"CONSTRAINT unique_users UNIQUE (id)"+
+				"CONSTRAINT unique_users UNIQUE (id),"+
+				"CONSTRAINT unique_username UNIQUE (username)"+
 			")");
 			db.run("CREATE TABLE IF NOT EXISTS Boleia ("+
 				"id INTEGER PRIMARY KEY AUTOINCREMENT,"+
 				"criador INTEGER NOT NULL,"+
-				"definitivo INTEGER DEFAULT 0"+
+				"definitivo INTEGER DEFAULT 0,"+
 				"data_hora INTEGER NOT NULL,"+
 				"preco INTEGER NOT NULL,"+
 				"origem TEXT NOT NULL,"+
-				"max_pass INTEGER NOT NULL"+
+				"max_pess INTEGER NOT NULL,"+
 				"destino TEXT NOT NULL,"+
 				"duracao_prevista INTEGER NOT NULL,"+
 				"concluido NUMERIC DEFAULT 0,"+
-				"descricao TEXT NOT NULL"+
+				"descricao TEXT NOT NULL,"+
 				"data_criacao INTEGER NOT NULL,"+
 				"data_modificacao INTEGER NOT NULL,"+
-				"FOREIGN KEY(criador) REFERENCES Users(id)"+
+				"FOREIGN KEY(criador) REFERENCES Users(id),"+
 				"CONSTRAINT unique_boleias UNIQUE (id)"+
 			")");
 			db.run("CREATE TABLE IF NOT EXISTS Hitchhiker ("+

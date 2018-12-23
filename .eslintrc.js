@@ -15,7 +15,7 @@ module.exports = {
             "never"
         ],
         "array-callback-return": "off",
-        "array-element-newline": "error",
+        "array-element-newline": "off",
         "arrow-body-style": "off",
         "arrow-parens": "off",
         "arrow-spacing": "off",
@@ -59,7 +59,7 @@ module.exports = {
         "eqeqeq": "off",
         "func-call-spacing": "error",
         "func-name-matching": "error",
-        "func-names": "error",
+        "func-names": "off",
         "func-style": [
             "error",
             "declaration"
@@ -100,7 +100,7 @@ module.exports = {
         "max-statements": "off",
         "max-statements-per-line": "error",
         "multiline-comment-style": "off",
-        "new-cap": "error",
+        "new-cap": "off",
         "new-parens": "error",
         "newline-after-var": "off",
         "newline-before-return": "off",
@@ -116,6 +116,7 @@ module.exports = {
 		"no-console": "off",
         "no-confusing-arrow": "error",
         "no-continue": "error",
+        "no-control-regex": "off",
         "no-div-regex": "error",
         "no-duplicate-imports": "error",
         "no-else-return": "error",
@@ -216,7 +217,7 @@ module.exports = {
         "operator-linebreak": "off",
         "padded-blocks": "off",
         "padding-line-between-statements": "error",
-        "prefer-arrow-callback": "error",
+        "prefer-arrow-callback": "off",
         "prefer-const": "off",
         "prefer-destructuring": "off",
         "prefer-numeric-literals": "error",
