@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "7b61136a-43f2-49bc-8dd0-e2f36c092344",
+		"name": "db",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initialize DB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3f318805-ea97-4a8b-9649-3d6a7171e467",
+						"exec": [
+							"pm.test(\"Create table response\",function(){",
+							"    pm.response.to.have.status(201);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d5779604-d611-4e89-b64e-b0597aab569b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/db/initDB",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"db",
+						"initDB"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"username\":\"test\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?username=test&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "test"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create while Logged in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"username\":\"test\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?username=test&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "test"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check user login status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c8c1bb52-4630-45c8-b73b-a4c0629275ce",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged\",\"username\":\"test\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/checkSession",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"checkSession"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout Loggedout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Denied, acount is deactivated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql(\"User is not logged.\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ee50bab-3707-4f9b-844a-205a16b6f28d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"username\":\"test\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/login?username=test&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "test"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f6c0763-e3e3-404f-b18d-447683b05525",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User has been loggout out and deactivated.\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/deactivateSelfAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"deactivateSelfAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate Logged out Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "794254a9-ed22-4cf3-9d5f-40fb621c95b4",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Denied, acount is deactivated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql(\"User is not logged.\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/DeactivateSelfAccount",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"DeactivateSelfAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check user login status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c8c1bb52-4630-45c8-b73b-a4c0629275ce",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"User should be logged\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":-65542,\"string\":\"passport:-6\",\"message\":\"User is not logged.\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/checkSession",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"checkSession"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Deactivated User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ee50bab-3707-4f9b-844a-205a16b6f28d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Denied, acount is deactivated\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql(\"Denied, account is deactivated.\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/login?username=test&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "test"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
