@@ -10,7 +10,6 @@ before_script:
   - npm --version
   - node_modules/.bin/newman --version
   - npm i
-  - node index.js
   - node index.js & export APP_ID=$!
   - sleep 1
 
