@@ -46,6 +46,48 @@ module.exports = {
 			code: -0x20002,
 			string: "db:-2",
 			message: "Provided id is invalid."
-		}
+		},
+		invalidData: {
+			code: -0x20003,
+			string: "db:-3",
+			message: "Provided data is invalid."
+		},
+		invalidPassword: {
+			code: -0x20004,
+			string: "db:-4",
+			message: "The provided password is invalid."
+		},
+		userNotFound: {
+			code: -0x20005,
+			string: "db:-5",
+			message: "The provided username does not match any user."
+		},
+	},
+	accountErrors: {
+		invalidRequestBody: {
+			code: -0x30001,
+			string: "account: -1",
+			message: "Provided request body is invalid."
+		},
+		unexptedError: {
+			code: -0x30002,
+			string: "account:-2",
+			message: "There was an unexptected erro."
+		},
+		invalidNomeFormatting: {
+			code: -0x30003,
+			string: "account:-3",
+			message: "Invalid format for 'nome'."
+		},
+		invalidPasswordFormatting: {
+			code: -0x30004,
+			string: "account:-4",
+			message: "Invalid format for 'password'."
+		},
+		noUsernameProvided: {
+			code: -0x30005,
+			string: "account:-5",
+			message: "A username was not providede."
+		},
 	}
 };
