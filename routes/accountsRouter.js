@@ -20,7 +20,7 @@ accountRouter.patch("/changeData", auth_isLogged, account_isActive, (req,res)=>{
 
 
 	dbDriver.user.changeFields(
-		req.user[dbColumns.latest.Users.USERNAME],
+		req.user[dbColumns.latest.Users.EMAIL],
 		req.body.nome || req.user[dbColumns.latest.Users.NOME],
 		req.body.nascimento || req.user[dbColumns.latest.Users.DATANASC],
 		req.body.carta || req.user[dbColumns.latest.Users.DATACARTA],
@@ -34,10 +34,10 @@ accountRouter.patch("/changeData", auth_isLogged, account_isActive, (req,res)=>{
 });
 
 accountRouter.get("/getData", (req,res)=>{
-	if(!req.query.username)
-		return res.status(400).send(accountErrors.noUsernameProvided);
+	if(!req.query.email)
+		return res.status(400).send(accountErrors.noEmailProvided);
 	
-	dbDriver.user.getByUsername(req.query.username, (err, user)=>{
+	dbDriver.user.getByEmail(req.query.email, (err, user)=>{
 		if(err)
 			return res.status(500).send({...accountErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 		
@@ -62,7 +62,7 @@ accountRouter.patch("/changePassword", auth_isLogged, account_isActive, (req,res
 	if(!regex.password.test(req.body.newPassword))
 		return res.status(400).send(accountErrors.invalidPasswordFormatting);
 	
-	dbDriver.user.changePassword(req.user[dbColumns.latest.Users.USERNAME], req.body.oldPassword, req.body.newPassword, (err,changed)=>{
+	dbDriver.user.changePassword(req.user[dbColumns.latest.Users.EMAIL], req.body.oldPassword, req.body.newPassword, (err,changed)=>{
 		if(err){
 			if(err === dbError.invalidPassword)
 				return res.status(400).send(err);

@@ -50,7 +50,7 @@ app.post('/login', auth_isNotLogged, function(req, res, next) {
 		if (!user)
 			return res.send(passportError.userNotFound);
 		
-		dbDriver.user.isActiveUsername(user[dbColumns.latest.Users.USERNAME],(err, active)=>{
+		dbDriver.user.isActiveEmail(user[dbColumns.latest.Users.EMAIL],(err, active)=>{
 			if(err)
 				return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 			
@@ -61,7 +61,7 @@ app.post('/login', auth_isNotLogged, function(req, res, next) {
 				if(err)
 					return res.send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 
-				return res.send({code:1, message:"User logged.", username:user[dbColumns.latest.Users.USERNAME]});
+				return res.send({code:1, message:"User logged.", email:user[dbColumns.latest.Users.EMAIL]});
 			});
 		});
 	})(req, res, next);
@@ -79,7 +79,7 @@ app.post("/signup", auth_isNotLogged, function(req, res, next) {
 			if(err)
 				return res.send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 			
-			return res.send({code:1, message:"User logged.", username: user[dbColumns.latest.Users.USERNAME]});
+			return res.send({code:1, message:"User logged.", email: user[dbColumns.latest.Users.EMAIL]});
 		});
 	})(req, res, next);
 });
@@ -88,11 +88,11 @@ app.post("/logout", auth_isLogged, (req, res)=>{
 	res.send({code:1, message:"User logged out"});
 });
 app.get("/checkSession", auth_isLogged, (req,res)=>{
-	res.send({code:1, message:"User logged", username: req.user[dbColumns.latest.Users.USERNAME]});
+	res.send({code:1, message:"User logged", email: req.user[dbColumns.latest.Users.EMAIL]});
 });
 app.delete("/deactivateSelfAccount", auth_isLogged, (req, res)=>{
-	let username = req.user[dbColumns.latest.Users.USERNAME];
-	dbDriver.user.removeByUsername(username,(err, changes)=>{
+	let email = req.user[dbColumns.latest.Users.EMAIL];
+	dbDriver.user.removeByEmail(email,(err, changes)=>{
 		if(err)
 			return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 		
@@ -104,18 +104,18 @@ app.delete("/deactivateSelfAccount", auth_isLogged, (req, res)=>{
 	});
 });
 app.post("/activateAccount", (req, res)=>{
-	if(!req.body.username || !req.body.password)
+	if(!req.body.email || !req.body.password)
 		return res.send(passportError.userOrPasswordInvalid);
 
 	// see if user exists
-	dbDriver.user.getByUsername(req.body.username, (err, user)=>{
+	dbDriver.user.getByEmail(req.body.email, (err, user)=>{
 		if(err)
 			return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 		
 		if(!user)
 			return res.status(400).send(passportError.userOrPasswordInvalid);
 		
-		dbDriver.user.activateByUsername(req.body.username, req.body.password, (err, changes)=>{
+		dbDriver.user.activateByEmail(req.body.email, req.body.password, (err, changes)=>{
 			if(err)
 				return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 			

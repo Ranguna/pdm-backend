@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "09dec020-6dbc-4d7b-abb3-aa6f472897fd",
+		"_postman_id": "d14cd99a-05d0-44c6-a91e-6006c9407807",
 		"name": "db Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -73,7 +73,7 @@
 									"});",
 									"",
 									"pm.test(\"body should be user created\", function () { ",
-									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"username\":\"test\"}); ",
+									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"test@example.com\"}); ",
 									"});",
 									""
 								],
@@ -89,7 +89,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:4020/signup?username=test&password=$trongP@ssw0rd",
+							"raw": "localhost:4020/signup?email=test@exemple.com&password=$trongP@ssw0rd",
 							"host": [
 								"localhost"
 							],
@@ -99,8 +99,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "test"
+									"key": "email",
+									"value": "test@exemple.com"
 								},
 								{
 									"key": "password",
@@ -124,7 +124,7 @@
 									"});",
 									"",
 									"pm.test(\"body should be user created\", function () { ",
-									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"username\":\"test\"}); ",
+									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"test@example.com\"}); ",
 									"});",
 									""
 								],
@@ -140,7 +140,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:4020/signup?username=test&password=$trongP@ssw0rd",
+							"raw": "localhost:4020/signup?email=test@exemple.com&password=$trongP@ssw0rd",
 							"host": [
 								"localhost"
 							],
@@ -150,8 +150,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "test"
+									"key": "email",
+									"value": "test@exemple.com"
 								},
 								{
 									"key": "password",
@@ -175,7 +175,7 @@
 									"});",
 									"",
 									"pm.test(\"User should be logged\", function () { ",
-									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged\",\"username\":\"test\"}); ",
+									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged\",\"email\":\"test@example.com\"}); ",
 									"});"
 								],
 								"type": "text/javascript"
@@ -297,7 +297,7 @@
 									"});",
 									"",
 									"pm.test(\"User should be logged\", function () { ",
-									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"username\":\"test\"}); ",
+									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"test@example.com\"}); ",
 									"});"
 								],
 								"type": "text/javascript"
@@ -312,7 +312,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:4020/login?username=test&password=$trongP@ssw0rd",
+							"raw": "localhost:4020/login?email=test@exemple.com&password=$trongP@ssw0rd",
 							"host": [
 								"localhost"
 							],
@@ -322,8 +322,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "test"
+									"key": "email",
+									"value": "test@exemple.com"
 								},
 								{
 									"key": "password",
@@ -487,7 +487,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:4020/login?username=test&password=$trongP@ssw0rd",
+							"raw": "localhost:4020/login?email=test@exemple.com&password=$trongP@ssw0rd",
 							"host": [
 								"localhost"
 							],
@@ -497,8 +497,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "test"
+									"key": "email",
+									"value": "test@exemple.com"
 								},
 								{
 									"key": "password",
@@ -544,8 +544,8 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "username",
-									"value": "test",
+									"key": "email",
+									"value": "test@exemple.com",
 									"type": "text"
 								},
 								{
@@ -603,8 +603,8 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "username",
-									"value": "test",
+									"key": "email",
+									"value": "test@exemple.com",
 									"type": "text"
 								},
 								{
@@ -662,7 +662,7 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "username",
+									"key": "email",
 									"value": "tes",
 									"type": "text"
 								},
@@ -704,7 +704,7 @@
 									"});",
 									"",
 									"pm.test(\"body should be user created\", function () { ",
-									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"username\":\"test2\"}); ",
+									"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"test2@example.com\"}); ",
 									"});",
 									""
 								],
@@ -720,7 +720,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:4020/signup?username=test2&password=$trongP@ssw0rd",
+							"raw": "localhost:4020/signup?email=test2@example.com&password=$trongP@ssw0rd",
 							"host": [
 								"localhost"
 							],
@@ -730,8 +730,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "test2"
+									"key": "email",
+									"value": "test2@example.com"
 								},
 								{
 									"key": "password",
@@ -841,27 +841,11 @@
 							}
 						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "nome",
-									"value": "José Manel",
-									"type": "text"
-								},
-								{
-									"key": "nascimento",
-									"value": "1545605730619",
-									"type": "text"
-								},
-								{
-									"key": "carta",
-									"value": "1545605730619",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:4020/account/getData?username=test2",
+							"raw": "localhost:4020/account/getData?email=test2@example.com",
 							"host": [
 								"localhost"
 							],
@@ -872,8 +856,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "test2"
+									"key": "email",
+									"value": "test2@example.com"
 								}
 							]
 						}
@@ -981,27 +965,11 @@
 							}
 						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "nome",
-									"value": "José Manel",
-									"type": "text"
-								},
-								{
-									"key": "nascimento",
-									"value": "1545605730619",
-									"type": "text"
-								},
-								{
-									"key": "carta",
-									"value": "1545605730619",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:4020/account/getData?username=test2",
+							"raw": "localhost:4020/account/getData?email=test2@example.com",
 							"host": [
 								"localhost"
 							],
@@ -1012,8 +980,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "test2"
+									"key": "email",
+									"value": "test2@example.com"
 								}
 							]
 						}

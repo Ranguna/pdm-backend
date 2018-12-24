@@ -32,14 +32,14 @@ module.exports = function(passport) {
 	// we are using named strategies since we have one for login and one for signup
 	// by default, if there was no name, it would just be called 'local'
 
-	passport.use('local-signup', new LocalStrategy((username, password, done) => {
+	passport.use('local-signup', new LocalStrategy({usernameField: 'email',passwordField: 'password'},(email, password, done) => {
 		// register user
 		// see if user and password are valid
-		if(!(regex.username.test(username) && regex.password.test(password)))
+		if(email == "" && regex.password.test(password))
 			return done(passportError.userOrPasswordInvalid);
 
 		// see if user exists
-		dbDriver.user.getByUsername(username,(err, user)=>{
+		dbDriver.user.getByEmail(email,(err, user)=>{
 			if(err){
 				return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 			}
@@ -53,14 +53,14 @@ module.exports = function(passport) {
 					return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 
 				// create user
-				dbDriver.user.newUser(username, hpass, function(err){
+				dbDriver.user.newUser(email, hpass, function(err){
 						if(err)
 							return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 						
 						// sqlite should return the inserted column
 						// it cant because it's insert command is run on the run method
 						// what a shame..
-						return dbDriver.user.getByUsername(username,done);
+						return dbDriver.user.getByEmail(email,done);
 					}
 				);
 			});
@@ -73,8 +73,8 @@ module.exports = function(passport) {
 	// =========================================================================
 	// we are using named strategies since we have one for login and one for signup
 	// by default, if there was no name, it would just be called 'local'
-	passport.use('local-login', new LocalStrategy((username, password, done) => {
-		dbDriver.user.getByUsername(username,(err, user)=>{
+	passport.use('local-login', new LocalStrategy({usernameField: 'email',passwordField: 'password'},(email, password, done) => {
+		dbDriver.user.getByEmail(email,(err, user)=>{
 			if(err)
 				return done(err);
 
