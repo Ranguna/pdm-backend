@@ -7,7 +7,6 @@ function auth_isLogged(req, res, next) {
 		return next();
 	}
 
-
 	// if they aren't redirect them to the home page
 	// console.log("is not logged", req.url);
 	res.status(400).send(passportError.userNotLogged);
