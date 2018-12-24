@@ -6,6 +6,7 @@ function auth_isLogged(req, res, next) {
 		// console.log("is logged");
 		return next();
 	}
+	
 
 	// if they aren't redirect them to the home page
 	// console.log("is not logged", req.url);
