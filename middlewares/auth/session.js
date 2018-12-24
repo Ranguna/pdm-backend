@@ -14,9 +14,8 @@ function auth_isLogged(req, res, next) {
 
 function auth_isNotLogged(req, res, next) {
 	// if user is not authenticated in the session, carry on
-	if (!req.isAuthenticated()){
+	if (!req.isAuthenticated())
 		return next();
-	}
 
 	// if they aren't redirect them to the home page
 	res.status(400).send(passportError.userLogged);

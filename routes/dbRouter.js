@@ -14,7 +14,7 @@ dbRouter.post("/initDB", (req,res)=>{
 			")");
 			db.run("CREATE TABLE IF NOT EXISTS Users ("+
 				"id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-				"username TEXT NOT NULL,"+
+				"email TEXT NOT NULL,"+
 				"nome TEXT DEFAULT '',"+
 				"password TEXT NOT NULL,"+
 				"data_nascimento INTEGER DEFAULT -1,"+
@@ -24,7 +24,7 @@ dbRouter.post("/initDB", (req,res)=>{
 				"data_modificacao INTEGER NOT NULL,"+
 				"data_desativacao INTEGER DEFAULT -1,"+
 				"CONSTRAINT unique_users UNIQUE (id),"+
-				"CONSTRAINT unique_username UNIQUE (username)"+
+				"CONSTRAINT unique_email UNIQUE (email)"+
 			")");
 			db.run("CREATE TABLE IF NOT EXISTS Boleia ("+
 				"id INTEGER PRIMARY KEY AUTOINCREMENT,"+

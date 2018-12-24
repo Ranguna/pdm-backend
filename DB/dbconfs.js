@@ -17,7 +17,7 @@ const dbColumns = {
 		Users: {
 			_NAME: "Users",
 			ID: "id",
-			USERNAME: "username",
+			EMAIL: "email",
 			NOME: "nome",
 			PASS: "password",
 			DATANASC: "data_nascimento",
@@ -78,13 +78,13 @@ const dbColumns = {
 
 let dbDriver = {
 	user: {
-		newUser: (username, hpass, cb = (err)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
-			if(!regex.username.test(username))
-				return cb({message:"Invalid username format."});
+		newUser: (email, hpass, cb = (err)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(email == "")
+				return cb({message:"Invalid email format."});
 
-			db.run(`INSERT INTO ${dbColumns.latest.Users._NAME} (${dbColumns.latest.Users.USERNAME}, ${dbColumns.latest.Users.PASS}, ${dbColumns.latest.Users.DATACRI}, ${dbColumns.latest.Users.DATAMOD}) VALUES (?, ?, ?, ?)`,
+			db.run(`INSERT INTO ${dbColumns.latest.Users._NAME} (${dbColumns.latest.Users.EMAIL}, ${dbColumns.latest.Users.PASS}, ${dbColumns.latest.Users.DATACRI}, ${dbColumns.latest.Users.DATAMOD}) VALUES (?, ?, ?, ?)`,
 				[
-					username,
+					email,
 					hpass,
 					(new Date()).getTime(),
 					(new Date()).getTime()
@@ -92,12 +92,13 @@ let dbDriver = {
 				cb
 			);
 		},
-		getByUsername: (username, cb = (err, user)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
-			if(!username)
-				return cb(dbError.usernameInvalid);
+		getByEmail: (email, cb = (err, user)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!email)
+				return cb(dbError.emailInvalid);
+
 			db.get(
-				`SELECT * FROM ${dbColumns.latest.Users._NAME} WHERE ${dbColumns.latest.Users.USERNAME} = ?`,
-				[username],
+				`SELECT * FROM ${dbColumns.latest.Users._NAME} WHERE ${dbColumns.latest.Users.EMAIL} = ?`,
+				[email],
 				cb
 			);
 		},
@@ -111,16 +112,16 @@ let dbDriver = {
 				cb
 			);
 		},
-		removeByUsername: (username, cb = (err, username)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
-			if(!username)
-				return cb(dbError.usernameInvalid);
+		removeByEmail: (email, cb = (err, email)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!email)
+				return cb(dbError.emailInvalid);
 			
 			db.run(
-				`UPDATE  ${dbColumns.latest.Users._NAME} SET (${dbColumns.latest.Users.DATADES}, ${dbColumns.latest.Users.DATAMOD}) = (?, ?) WHERE ${dbColumns.latest.Users.USERNAME} = ?`,
+				`UPDATE  ${dbColumns.latest.Users._NAME} SET (${dbColumns.latest.Users.DATADES}, ${dbColumns.latest.Users.DATAMOD}) = (?, ?) WHERE ${dbColumns.latest.Users.EMAIL} = ?`,
 				[
 					(new Date()).getTime(),
 					(new Date()).getTime(),
-					username
+					email
 				],
 				function(err){
 					cb(err && err.message, this.changes);
@@ -143,12 +144,12 @@ let dbDriver = {
 				}
 			);
 		},
-		activateByUsername: (username, password, cb = (err, username)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
-			if(!username)
+		activateByEmail: (email, password, cb = (err, email)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!email)
 				return cb(dbError.invalidData);
 			
 
-			dbDriver.user.getByUsername(username,(err, user)=>{
+			dbDriver.user.getByEmail(email,(err, user)=>{
 				if(err)
 					return cb({...dbError.unexptedError, ...(leakInternalErrors?{internalError: err}:{})});
 				
@@ -163,11 +164,11 @@ let dbDriver = {
 						return cb(db.invalidPassword);
 					
 					db.run(
-						`UPDATE  ${dbColumns.latest.Users._NAME} SET (${dbColumns.latest.Users.DATADES}, ${dbColumns.latest.Users.DATAMOD}) = (?, ?) WHERE ${dbColumns.latest.Users.USERNAME} = ? AND ${dbColumns.latest.Users.DATADES} <> -1`,
+						`UPDATE  ${dbColumns.latest.Users._NAME} SET (${dbColumns.latest.Users.DATADES}, ${dbColumns.latest.Users.DATAMOD}) = (?, ?) WHERE ${dbColumns.latest.Users.EMAIL} = ? AND ${dbColumns.latest.Users.DATADES} <> -1`,
 						[
 							-1,
 							(new Date()).getTime(),
-							username
+							email
 						],
 						function(err){
 							cb(err && err.message, this.changes);
@@ -176,8 +177,8 @@ let dbDriver = {
 				});
 			});
 		},
-		isActiveUsername: (username, cb=(err, active)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
-			dbDriver.user.getByUsername(username, (err, user)=>{
+		isActiveEmail: (email, cb=(err, active)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			dbDriver.user.getByEmail(email, (err, user)=>{
 				if(err)
 					return cb(err);
 
@@ -193,27 +194,26 @@ let dbDriver = {
 			});
 		},
 
-		changeFields: (username, nome, nascimento, carta, cb=(err,rowsChanged)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
-			if(!username || !nome || !nascimento || !carta)
+		changeFields: (email, nome, nascimento, carta, cb=(err,rowsChanged)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!email || !nome || !nascimento || !carta)
 				return cb(dbError.invalidData);
 
 			if(nome != "" && !regex.user.test(nome))
 				return cb({message: "Invalid format for 'nome'."});
 			
-
 			db.run(
 				`UPDATE ${dbColumns.latest.Users._NAME} SET (`+
 					`${dbColumns.latest.Users.NOME}, `+
 					`${dbColumns.latest.Users.DATANASC}, `+
 					`${dbColumns.latest.Users.DATACARTA}, `+
 					`${dbColumns.latest.Users.DATAMOD}`+
-				`) = (?,?,?,?) WHERE ${dbColumns.latest.Users.USERNAME} = ?`,
+				`) = (?,?,?,?) WHERE ${dbColumns.latest.Users.EMAIL} = ?`,
 				[
 					nome,
 					nascimento,
 					carta,
 					(new Date()).getTime(),
-					username
+					email
 				],
 				function(err){
 					return cb(err && err.message, this.changes);
@@ -221,15 +221,15 @@ let dbDriver = {
 			);
 		},
 
-		changePassword: (username, oldPassword, newPassword, cb=(err, changed)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
-			if(!username || !oldPassword || !newPassword)
+		changePassword: (email, oldPassword, newPassword, cb=(err, changed)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!email || !oldPassword || !newPassword)
 				return cb(dbError.invalidData);
 
 			if(!regex.password.test(newPassword)){
 				return cb({message: "Invalid format for 'password'."});
 			}
 			
-			dbDriver.user.getByUsername(username,(err, user)=>{
+			dbDriver.user.getByEmail(email,(err, user)=>{
 				if(err)
 					return cb({...dbError.unexptedError, ...(leakInternalErrors?{internalError: err}:{})});
 				
@@ -248,11 +248,11 @@ let dbDriver = {
 							`UPDATE ${dbColumns.latest.Users._NAME} SET (`+
 								`${dbColumns.latest.Users.PASS}, `+
 								`${dbColumns.latest.Users.DATAMOD}`+
-							`) = (?,?) WHERE ${dbColumns.latest.Users.USERNAME} = ?`,
+							`) = (?,?) WHERE ${dbColumns.latest.Users.EMAIL} = ?`,
 							[
 								hpass,
 								(new Date()).getTime(),
-								username
+								email
 							],
 							function(err){
 								return cb(err && err.message, this.change);

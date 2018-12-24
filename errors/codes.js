@@ -5,7 +5,7 @@ module.exports = {
 			string: "passport:-1",
 			message: "User was not found"
 		},
-		userOrPasswordInvalid: {
+		emailOrPasswordInvalid: {
 			code: -0x10002,
 			string: "passport:-2",
 			message: "User or password are invalid."
@@ -37,10 +37,10 @@ module.exports = {
 		}
 	},
 	dbError: {
-		usernameInvalid: {
+		emailInvalid: {
 			code: -0x20001,
 			string: "db:-1",
-			message: "Provided username is invalid."
+			message: "Provided email is invalid."
 		},
 		idInvalid: {
 			code: -0x20002,
@@ -60,7 +60,7 @@ module.exports = {
 		userNotFound: {
 			code: -0x20005,
 			string: "db:-5",
-			message: "The provided username does not match any user."
+			message: "The provided email does not match any user."
 		},
 	},
 	accountErrors: {
@@ -84,10 +84,10 @@ module.exports = {
 			string: "account:-4",
 			message: "Invalid format for 'password'."
 		},
-		noUsernameProvided: {
+		noEmailProvided: {
 			code: -0x30005,
 			string: "account:-5",
-			message: "A username was not providede."
+			message: "A email was not providede."
 		},
 	}
 };
