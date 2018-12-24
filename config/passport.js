@@ -1,14 +1,11 @@
 const bcrypt = require('bcrypt');
 
-const {db, dbDriver, dbColumns} = require('../DB/dbconfs');
+const {dbDriver, dbColumns} = require('../DB/dbconfs');
 const LocalStrategy = require('passport-local').Strategy;
 
 const {passportError} = require("../errors/codes");
 
-const regex = {
-	user: /[\p{L} ]+/gu,
-	password: /^(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*\d+)(?=.*[^a-zA-Z0-9\u0000-\u001F\u0080-\u00A0]+)[^\u0000-\u001F\u0080-\u00A0]{8,100}$/gu
-};
+const regex = require("../config/regex");
 
 const {leakInternalErrors} = require("../config/globals");
 
@@ -38,7 +35,7 @@ module.exports = function(passport) {
 	passport.use('local-signup', new LocalStrategy((username, password, done) => {
 		// register user
 		// see if user and password are valid
-		if(!(regex.user.test(username) && regex.password.test(password)))
+		if(!(regex.username.test(username) && regex.password.test(password)))
 			return done(passportError.userOrPasswordInvalid);
 
 		// see if user exists

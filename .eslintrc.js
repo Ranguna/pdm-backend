@@ -113,7 +113,7 @@ module.exports = {
         "no-buffer-constructor": "error",
         "no-caller": "error",
 		"no-catch-shadow": "off",
-		"no-console": "off",
+		"no-console": "warn",
         "no-confusing-arrow": "error",
         "no-continue": "error",
         "no-control-regex": "off",

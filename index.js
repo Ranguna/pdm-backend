@@ -13,13 +13,14 @@ const PORT = 4020;
 // import middlewares
 const {auth_isLogged, auth_isNotLogged} = require("./middlewares/auth/session");
 
-
-// import routes
-const dbRouter = require("./routes/dbRouter");
-
+// import setting and functions
 const {leakInternalErrors} = require("./config/globals");
 const {passportError} = require("./errors/codes");
 const {dbColumns, dbDriver} = require('./DB/dbconfs');
+
+// import routes
+const dbRouter = require("./routes/dbRouter");
+const accountRouter = require("./routes/accountsRouter");
 
 // Express initializations
 app.use(logger('dev'));
@@ -37,6 +38,7 @@ app.use(passport.session());
 
 // routes
 app.use("/db", dbRouter);
+app.use("/account", accountRouter);
 
 
 // login route
@@ -101,6 +103,31 @@ app.delete("/deactivateSelfAccount", auth_isLogged, (req, res)=>{
 		return res.send({code: 1, message: "User has been loggout out and deactivated."});
 	});
 });
+app.post("/activateAccount", (req, res)=>{
+	if(!req.body.username || !req.body.password)
+		return res.send(passportError.userOrPasswordInvalid);
+
+	// see if user exists
+	dbDriver.user.getByUsername(req.body.username, (err, user)=>{
+		if(err)
+			return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
+		
+		if(!user)
+			return res.status(400).send(passportError.userOrPasswordInvalid);
+		
+		dbDriver.user.activateByUsername(req.body.username, req.body.password, (err, changes)=>{
+			if(err)
+				return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
+			
+			if(changes == 0)
+				return res.send({code: 2, message: "User was not reactivated."});
+				
+			return res.send({code: 1, message: "User has been reactivated."});
+		});
+	});
+
+	
+});
 
 // ping route
 app.get("/ping",(req,res)=>{
@@ -109,7 +136,7 @@ app.get("/ping",(req,res)=>{
 
 // Server listening
 app.listen(PORT, ()=>{
-	console.log(`Listening on ${PORT}`);
+	console.log(`Listening on ${PORT}`); // eslint-disable-line no-console
 });
 
 
