@@ -1,0 +1,1507 @@
+{
+	"info": {
+		"_postman_id": "6b4b9111-4fdb-4fd1-a6a0-5a1595299522",
+		"name": "Boleia Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Boleia without user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2a99f698-31d7-45e5-a498-c22c29194719",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Boleia should not be created\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(-65542);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/new",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user for testing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"testboleia@exemple.com\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?email=testboleia@exemple.com&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testboleia@exemple.com"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ec60c7e-d489-4214-8ade-ba64f2e26c1b",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Boleia should be created\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"    pm.globals.set(\"boleia_id\", jsonData.boleia.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/new",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ec60c7e-d489-4214-8ade-ba64f2e26c1b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Boleia should be canceled\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/cancel/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"cancel",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recancel Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ec60c7e-d489-4214-8ade-ba64f2e26c1b",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Boleia should not be canceled\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(-262153);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/cancel/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"cancel",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Uncancel Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ec60c7e-d489-4214-8ade-ba64f2e26c1b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Boleia should be uncanceled\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/uncancel/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"uncancel",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reuncancel Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ec60c7e-d489-4214-8ade-ba64f2e26c1b",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Boleia should not be uncanceled\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(-262160);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/uncancel/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"uncancel",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user for join testing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"testboleiajoining@exemple.com\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?email=testboleiajoining@exemple.com&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testboleiajoining@exemple.com"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Join Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e350f7-c297-4a20-8540-46306a4633a2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User joined boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/join/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"join",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User already joined",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e350f7-c297-4a20-8540-46306a4633a2",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"User cant join\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(-262150);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/join/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"join",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Leave boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ef003b6d-fcfc-4527-83ea-e298e45576f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User left boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/leave/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"leave",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fail to leave boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ef003b6d-fcfc-4527-83ea-e298e45576f6",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"User didn't leave boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(-262162);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/leave/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"leave",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Join Boleia after leaving",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e350f7-c297-4a20-8540-46306a4633a2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User joined boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/join/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"join",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user to fill boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"testboleiajoining@exemple.com\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?email=testboleiajoining2@exemple.com&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testboleiajoining2@exemple.com"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Join Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e350f7-c297-4a20-8540-46306a4633a2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User joined boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/join/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"join",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user to fill boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"testboleiajoining@exemple.com\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?email=testboleiajoining3@exemple.com&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testboleiajoining3@exemple.com"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Join Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e350f7-c297-4a20-8540-46306a4633a2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User joined boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/join/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"join",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user to fill boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"testboleiajoining@exemple.com\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?email=testboleiajoining4@exemple.com&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testboleiajoining4@exemple.com"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Join Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e350f7-c297-4a20-8540-46306a4633a2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User joined boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/join/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"join",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user to fill boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"body should be user created\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged.\",\"email\":\"testboleiajoining@exemple.com\"}); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?email=testboleiajoining5@exemple.com&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testboleiajoining5@exemple.com"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Boleia is full",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e350f7-c297-4a20-8540-46306a4633a2",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"User joined boleia\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(-262149);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/join/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"join",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get boleia hitchhikers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2916f61e-2143-4006-b92d-87957a848b28",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Got boleia hitchhikers\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/hitchhikers/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"hitchhikers",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Boleia Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "22e75276-13d2-4ccf-91dc-6eca12c951df",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Got boleia info\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/get/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"get",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "d14cd99a-05d0-44c6-a91e-6006c9407807",
+		"name": "db Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create DB",
+			"item": [
+				{
+					"name": "Initialize DB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3f318805-ea97-4a8b-9649-3d6a7171e467",
+								"exec": [
+									"pm.test(\"Create table response\",function(){",
+									"    pm.response.to.have.status(201);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d5779604-d611-4e89-b64e-b0597aab569b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:4020/db/initDB",
+							"host": [
+								"localhost"
+							],
+							"port": "4020",
+							"path": [
+								"db",
+								"initDB"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

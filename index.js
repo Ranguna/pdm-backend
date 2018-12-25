@@ -16,11 +16,13 @@ const {auth_isLogged, auth_isNotLogged} = require("./middlewares/auth/session");
 // import setting and functions
 const {leakInternalErrors} = require("./config/globals");
 const {passportError} = require("./errors/codes");
-const {dbColumns, dbDriver} = require('./DB/dbconfs');
+const {dbColumns} = require('./DB/dbconfs');
+const userDriver = require("./DB/userDriver");
 
 // import routes
 const dbRouter = require("./routes/dbRouter");
 const accountRouter = require("./routes/accountsRouter");
+const boleiaRouter = require("./routes/boleiaRouter");
 
 // Express initializations
 app.use(logger('dev'));
@@ -39,6 +41,7 @@ app.use(passport.session());
 // routes
 app.use("/db", dbRouter);
 app.use("/account", accountRouter);
+app.use("/boleia", boleiaRouter);
 
 
 // login route
@@ -50,7 +53,7 @@ app.post('/login', auth_isNotLogged, function(req, res, next) {
 		if (!user)
 			return res.send(passportError.userNotFound);
 		
-		dbDriver.user.isActiveEmail(user[dbColumns.latest.Users.EMAIL],(err, active)=>{
+		userDriver.user.isActiveEmail(user[dbColumns.latest.Users.EMAIL],(err, active)=>{
 			if(err)
 				return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 			
@@ -70,8 +73,11 @@ app.post("/signup", auth_isNotLogged, function(req, res, next) {
 	// console.log("calling");
 	passport.authenticate('local-signup', function(err, user) {
 		// console.log("resis",err,user);
-		if (err)
-			return res.send(err);
+		if (err){
+			if(err == passportError.userAlreadyExists)
+				return res.status(400).send(err);
+			return res.status(500).send(err);
+		}
 		if (!user)
 			return res.send(passportError.userOrPasswordInvalid);
 
@@ -92,7 +98,7 @@ app.get("/checkSession", auth_isLogged, (req,res)=>{
 });
 app.delete("/deactivateSelfAccount", auth_isLogged, (req, res)=>{
 	let email = req.user[dbColumns.latest.Users.EMAIL];
-	dbDriver.user.removeByEmail(email,(err, changes)=>{
+	userDriver.user.removeByEmail(email,(err, changes)=>{
 		if(err)
 			return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 		
@@ -108,14 +114,14 @@ app.post("/activateAccount", (req, res)=>{
 		return res.send(passportError.userOrPasswordInvalid);
 
 	// see if user exists
-	dbDriver.user.getByEmail(req.body.email, (err, user)=>{
+	userDriver.user.getByEmail(req.body.email, (err, user)=>{
 		if(err)
 			return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 		
 		if(!user)
 			return res.status(400).send(passportError.userOrPasswordInvalid);
 		
-		dbDriver.user.activateByEmail(req.body.email, req.body.password, (err, changes)=>{
+		userDriver.user.activateByEmail(req.body.email, req.body.password, (err, changes)=>{
 			if(err)
 				return res.status(500).send({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 			

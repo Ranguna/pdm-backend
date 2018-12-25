@@ -1,4 +1,4 @@
-module.exports = {
+	module.exports = {
 	passportError: {
 		userNotFound: {
 			code: -0x10001,
@@ -89,5 +89,72 @@ module.exports = {
 			string: "account:-5",
 			message: "A email was not providede."
 		},
+	},
+	boleiaErrors: {
+		unexptedError: {
+			code: -0x40001,
+			string: "boleia:-1",
+			message: "There was an unexptected erro."
+		},
+		invalidRequestBody: {
+			code: -0x40002,
+			string: "boleia:-2",
+			message: "Provided request body is invalid."
+		},
+		invalidBoleiaId: {
+			code: -0x40003,
+			string: "boleia:-3",
+			message: "Invalid boleia Id."
+		},
+		invalidUserId: {
+			code: -0x40004,
+			string: "boleia:-4",
+			message: "Invalid user Id."
+		},
+		boleiaIsFull: {
+			code: -0x40005,
+			string: "boleia:-5",
+			message: "Boleia is full."
+		},
+		userAlreadyInBoleia: {
+			code: -0x40006,
+			string: "boleia:-6",
+			message: "The current user is already in Boleia."
+		},
+		couldnHitchhike: {
+			code: -0x40007,
+			string: "boleia:-7",
+			message: "User was not registered on Boleia."
+		},
+		userNotOwner: {
+			code: -0x40008,
+			string: "boleia:-8",
+			message: "Denied, user is not owner of boleia."
+		},
+		boleiaNotCanceled: {
+			code: -0x40009,
+			string: "boleia:-9",
+			message: "Boleia was not canceled."
+		},
+		boleiaNotuncanceled: {
+			code: -0x40010,
+			string: "boleia:-10",
+			message: "Boleia was not uncanceled."
+		},
+		userNotInBoleia: {
+			code: -0x40011,
+			string: "boleia:-11",
+			message: "User is not in Boleia."
+		},
+		couldntCancelHitch: {
+			code: -0x40012,
+			string: "boleia:-12",
+			message: "Hitchhike was not canceled."
+		},
+		boleiaCanceled: {
+			code: -0x40013,
+			string: "boleia:-13",
+			message: "Denied, boleia is canceled."
+		}
 	}
 };
