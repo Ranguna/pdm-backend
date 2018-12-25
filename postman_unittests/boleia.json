@@ -1374,6 +1374,134 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get boleia hitchhikers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2916f61e-2143-4006-b92d-87957a848b28",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Got boleia hitchhikers\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/hitchhikers/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"hitchhikers",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea4994aa-cf8e-48d3-82c3-f240e38672f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User should be logged out\", function () { ",
+							"    pm.response.to.have.jsonBody({\"code\":1,\"message\":\"User logged out\"}); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Boleia Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "22e75276-13d2-4ccf-91dc-6eca12c951df",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Got boleia info\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/get/{{boleia_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"get",
+						"{{boleia_id}}"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
