@@ -31,21 +31,22 @@ dbRouter.post("/initDB", (req,res)=>{
 				"criador INTEGER NOT NULL,"+
 				"definitivo INTEGER DEFAULT 0,"+
 				"data_hora INTEGER NOT NULL,"+
-				"preco INTEGER NOT NULL,"+
 				"origem TEXT NOT NULL,"+
 				"max_pess INTEGER NOT NULL,"+
 				"destino TEXT NOT NULL,"+
 				"duracao_prevista INTEGER NOT NULL,"+
 				"concluido NUMERIC DEFAULT 0,"+
-				"descricao TEXT NOT NULL,"+
+				"descricao TEXT DEFAULT '',"+
 				"data_criacao INTEGER NOT NULL,"+
 				"data_modificacao INTEGER NOT NULL,"+
+				"cancelada INTEGER DEFAULT 0,"+
 				"FOREIGN KEY(criador) REFERENCES Users(id),"+
 				"CONSTRAINT unique_boleias UNIQUE (id)"+
 			")");
 			db.run("CREATE TABLE IF NOT EXISTS Hitchhiker ("+
 				"user INTEGER NOT NULL,"+
 				"boleia INTEGER NOT NULL,"+
+				"cancelado INTEGER DEFAULT 0,"+
 				"data_criacao INTEGER NOT NULL,"+
 				"data_modificacao INTEGER NOT NULL,"+
 				"FOREIGN KEY(user) REFERENCES Users(id),"+

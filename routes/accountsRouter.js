@@ -8,7 +8,8 @@ const {account_isActive} = require("../middlewares/auth/account");
 const {accountErrors, dbError} = require("../errors/codes");
 const {leakInternalErrors} = require("../config/globals");
 
-const {dbDriver, dbColumns} = require('../DB/dbconfs');
+const {dbColumns} = require('../DB/dbconfs');
+const userDriver = require("../DB/userDriver");
 const regex = require("../config/regex");
 
 accountRouter.patch("/changeData", auth_isLogged, account_isActive, (req,res)=>{
@@ -19,7 +20,7 @@ accountRouter.patch("/changeData", auth_isLogged, account_isActive, (req,res)=>{
 		return res.status(400).send(accountErrors.invalidNomeFormatting);
 
 
-	dbDriver.user.changeFields(
+	userDriver.user.changeFields(
 		req.user[dbColumns.latest.Users.EMAIL],
 		req.body.nome || req.user[dbColumns.latest.Users.NOME],
 		req.body.nascimento || req.user[dbColumns.latest.Users.DATANASC],
@@ -37,7 +38,7 @@ accountRouter.get("/getData", (req,res)=>{
 	if(!req.query.email)
 		return res.status(400).send(accountErrors.noEmailProvided);
 	
-	dbDriver.user.getByEmail(req.query.email, (err, user)=>{
+	userDriver.user.getByEmail(req.query.email, (err, user)=>{
 		if(err)
 			return res.status(500).send({...accountErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 		
@@ -62,7 +63,7 @@ accountRouter.patch("/changePassword", auth_isLogged, account_isActive, (req,res
 	if(!regex.password.test(req.body.newPassword))
 		return res.status(400).send(accountErrors.invalidPasswordFormatting);
 	
-	dbDriver.user.changePassword(req.user[dbColumns.latest.Users.EMAIL], req.body.oldPassword, req.body.newPassword, (err,changed)=>{
+	userDriver.user.changePassword(req.user[dbColumns.latest.Users.EMAIL], req.body.oldPassword, req.body.newPassword, (err,changed)=>{
 		if(err){
 			if(err === dbError.invalidPassword)
 				return res.status(400).send(err);

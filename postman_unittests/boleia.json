@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "6b4b9111-4fdb-4fd1-a6a0-5a1595299522",
+		"name": "Boleia Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Boleia without user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ec60c7e-d489-4214-8ade-ba64f2e26c1b",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Boleia should be created\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/new",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user for testing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "852e609e-3cb1-4eec-9976-f24f1445c6de",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/signup?email=testboleia@exemple.com&password=$trongP@ssw0rd",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testboleia@exemple.com"
+						},
+						{
+							"key": "password",
+							"value": "$trongP@ssw0rd"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Boleia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ec60c7e-d489-4214-8ade-ba64f2e26c1b",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Boleia should be created\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "dataHora",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "maxPessoas",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "origem",
+							"value": "covilha",
+							"type": "text"
+						},
+						{
+							"key": "destino",
+							"value": "lisboa",
+							"type": "text"
+						},
+						{
+							"key": "duracaoPrevista",
+							"value": "110",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/new",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"new"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

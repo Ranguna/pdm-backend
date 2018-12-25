@@ -14,5 +14,7 @@ before_script:
   - sleep 1
 
 script:
-  - node_modules/.bin/newman run postman_unittests/dbaccount.json
+  - node_modules/.bin/newman run postman_unittests/db.json
+  - node_modules/.bin/newman run postman_unittests/accounts.json
+  - node_modules/.bin/newman run postman_unittests/boleia.json
   - kill -9 $APP_ID

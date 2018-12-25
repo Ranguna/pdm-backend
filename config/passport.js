@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
-const {dbDriver, dbColumns} = require('../DB/dbconfs');
+const {dbColumns} = require('../DB/dbconfs');
+const userDriver = require('../DB/userDriver');
 const LocalStrategy = require('passport-local').Strategy;
 
 const {passportError} = require("../errors/codes");
@@ -23,7 +24,7 @@ module.exports = function(passport) {
 	});
 	// used to deserialize the user
 	passport.deserializeUser(function(id, done) {
-		dbDriver.user.getById(id,done);
+		userDriver.user.getById(id,done);
 	});
 
 	// =========================================================================
@@ -39,13 +40,13 @@ module.exports = function(passport) {
 			return done(passportError.userOrPasswordInvalid);
 
 		// see if user exists
-		dbDriver.user.getByEmail(email,(err, user)=>{
+		userDriver.user.getByEmail(email,(err, user)=>{
 			if(err){
 				return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 			}
 			
 			if(user)
-				done(passportError.userAlreadyExists);
+				return done(passportError.userAlreadyExists);
 			
 			// calculate password hash
 			bcrypt.hash(password, 11, (err, hpass)=>{
@@ -53,14 +54,14 @@ module.exports = function(passport) {
 					return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 
 				// create user
-				dbDriver.user.newUser(email, hpass, function(err){
+				userDriver.user.newUser(email, hpass, function(err){
 						if(err)
 							return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
 						
 						// sqlite should return the inserted column
 						// it cant because it's insert command is run on the run method
 						// what a shame..
-						return dbDriver.user.getByEmail(email,done);
+						return userDriver.user.getByEmail(email,done);
 					}
 				);
 			});
@@ -74,7 +75,7 @@ module.exports = function(passport) {
 	// we are using named strategies since we have one for login and one for signup
 	// by default, if there was no name, it would just be called 'local'
 	passport.use('local-login', new LocalStrategy({usernameField: 'email',passwordField: 'password'},(email, password, done) => {
-		dbDriver.user.getByEmail(email,(err, user)=>{
+		userDriver.user.getByEmail(email,(err, user)=>{
 			if(err)
 				return done(err);
 
