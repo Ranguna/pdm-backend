@@ -55,15 +55,14 @@ module.exports = function(passport) {
 
 				// create user
 				userDriver.user.newUser(email, hpass, function(err){
-						if(err)
-							return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
-						
-						// sqlite should return the inserted column
-						// it cant because it's insert command is run on the run method
-						// what a shame..
-						return userDriver.user.getByEmail(email,done);
-					}
-				);
+					if(err)
+						return done({...passportError.unexptedError,...(leakInternalErrors?{internalError:err}:{})});
+					
+					// sqlite should return the inserted column
+					// it cant because it's insert command is run on the run method
+					// what a shame..
+					return userDriver.user.getByEmail(email,done);
+				});
 			});
 		});
 	}));

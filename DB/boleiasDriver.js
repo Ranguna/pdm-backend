@@ -41,23 +41,22 @@ let boleiaDriver = {
 					`${dbColumns.latest.Boleia.DATACRI},`+
 					`${dbColumns.latest.Boleia.DATAMOD}`+
 				`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-					[
-						idOwner,
-						dateTime,
-						maxPeople,
-						orign,
-						destination,
-						description,
-						exptdDuration,
-						(new Date()).getTime(),
-						(new Date()).getTime()
-					],
-					function(err){
-						if(err)
-							return cb(err.message);
-						boleiaDriver.boleia.getBoleiaById(this.lastID, cb);
-					}
-				);
+				[
+					idOwner,
+					dateTime,
+					maxPeople,
+					orign,
+					destination,
+					description,
+					exptdDuration,
+					(new Date()).getTime(),
+					(new Date()).getTime()
+				],
+				function(err){
+					if(err)
+						return cb(err.message);
+					boleiaDriver.boleia.getBoleiaById(this.lastID, cb);
+				});
 			});
 		},
 		/**

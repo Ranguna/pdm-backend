@@ -54,7 +54,7 @@ boleiaRouter.get("/hitchhikers/:boleiaId", auth_isLogged, account_isActive, (req
 	boleiasDriver.boleia.getHitchhikersInBoleia(req.params.boleiaId, (err, hitchhickers)=>{
 		if(err){
 			if(err == dbError.invalidData)
-					return res.status(400).send(err);
+				return res.status(400).send(err);
 			return res.status(500).send({...boleiaErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 		}
 
