@@ -31,7 +31,6 @@ const dbColumns = {
 			ORIGEM: "origem",
 			MAXPESS: "max_pess",
 			DEST: "destino",
-			DURPREV: "duracao_prevista",
 			CONCL: "concluido",
 			DESC: "descricao",
 			CANC: "cancelada",

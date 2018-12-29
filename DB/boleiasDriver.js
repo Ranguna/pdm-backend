@@ -17,7 +17,7 @@ let boleiaDriver = {
 			description = "",
 			cb = (err, boleia)=>{} // eslint-disable-line handle-callback-err, no-unused-vars
 		)=>{
-			if(!idOwner || !dateTime || !maxPeople || !orign || !destination || !exptdDuration)
+			if(!idOwner || !dateTime || !maxPeople || !orign || !destination)
 				return cb(dbError.invalidData);
 
 			// see if user exists and is active
@@ -37,10 +37,9 @@ let boleiaDriver = {
 					`${dbColumns.latest.Boleia.ORIGEM},`+
 					`${dbColumns.latest.Boleia.DEST},`+
 					`${dbColumns.latest.Boleia.DESC},`+
-					`${dbColumns.latest.Boleia.DURPREV},`+
 					`${dbColumns.latest.Boleia.DATACRI},`+
 					`${dbColumns.latest.Boleia.DATAMOD}`+
-				`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 				[
 					idOwner,
 					dateTime,

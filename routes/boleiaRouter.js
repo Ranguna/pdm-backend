@@ -21,7 +21,6 @@ boleiaRouter.post("/new", auth_isLogged, account_isActive, (req,res)=>{
 		req.body.maxPessoas,
 		req.body.origem,
 		req.body.destino,
-		req.body.duracaoPrevista,
 		req.body.descricao,
 		(err,boleia)=>{
 			if(err){
