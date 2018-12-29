@@ -47,7 +47,7 @@ npm i -g npm
 ```
 
 ## Setting Things Up
-To git this server running, you should [install Nodejs](#installing-nodejs) first, once that's done, clone this repo and `npm install` the necessary packages.
+To get this server running, you should [install Nodejs](#installing-nodejs) first, once that's done, clone this repo and `npm install` the necessary packages.
 
 After installing the packages, start the server with `node index.js` from the project's root.
 
