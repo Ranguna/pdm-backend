@@ -13,7 +13,6 @@ let boleiaDriver = {
 			maxPeople,
 			orign,
 			destination,
-			exptdDuration,
 			description = "",
 			cb = (err, boleia)=>{} // eslint-disable-line handle-callback-err, no-unused-vars
 		)=>{
@@ -47,7 +46,6 @@ let boleiaDriver = {
 					orign,
 					destination,
 					description,
-					exptdDuration,
 					(new Date()).getTime(),
 					(new Date()).getTime()
 				],
