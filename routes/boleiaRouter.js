@@ -47,6 +47,15 @@ boleiaRouter.get("/get/:boleiaId", (req,res)=>{
 	});
 });
 
+boleiaRouter.get("/getAll", (req,res)=>{
+	boleiasDriver.boleia.getAllBoleias((err, boleias)=>{
+		if(err)
+			return res.status(500).send({...boleiaErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
+		
+		return res.send({code: 1, boleias});
+	});
+});
+
 boleiaRouter.get("/hitchhikers/:boleiaId", auth_isLogged, account_isActive, (req,res)=>{
 	if(!req.params.boleiaId)
 		return req.status(400).send(boleiaErrors.invalidBoleiaId);

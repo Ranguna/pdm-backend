@@ -1502,6 +1502,48 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get all boleias",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c3e248ed-6c35-4026-968f-ff328fcb6931",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Get boleia info\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.code).to.eql(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:4020/boleia/getAll",
+					"host": [
+						"localhost"
+					],
+					"port": "4020",
+					"path": [
+						"boleia",
+						"getAll"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

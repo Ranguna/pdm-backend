@@ -94,7 +94,10 @@ app.post("/logout", auth_isLogged, (req, res)=>{
 	res.send({code:1, message:"User logged out"});
 });
 app.get("/checkSession", auth_isLogged, (req,res)=>{
-	res.send({code:1, message:"User logged", email: req.user[dbColumns.latest.Users.EMAIL]});
+	let user = {...req.user};
+	delete user[dbColumns.latest.Users.PASS];
+
+	res.send({code:1, message:"User logged", user});
 });
 app.delete("/deactivateSelfAccount", auth_isLogged, (req, res)=>{
 	let email = req.user[dbColumns.latest.Users.EMAIL];

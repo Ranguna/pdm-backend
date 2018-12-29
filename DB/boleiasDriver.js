@@ -89,6 +89,30 @@ let boleiaDriver = {
 				}
 			);
 		},
+		getHitchhikersInBoleiaPromised: (id)=>{
+			return new Promise(function(resolve, reject){
+				if(!id)
+					return reject(dbError.idInvalid);
+				db.all( // sql, y u lik dis...
+					`SELECT `+
+						`userTable.${dbColumns.latest.Users.ID},`+
+						`userTable.${dbColumns.latest.Users.NOME}, `+
+						`userTable.${dbColumns.latest.Users.EMAIL} `+
+					`FROM `+
+						`${dbColumns.latest.Hitchhiker._NAME} AS hitch `+
+					`JOIN ${dbColumns.latest.Users._NAME} AS userTable `+
+						`ON userTable.${dbColumns.latest.Users.ID} = hitch.${dbColumns.latest.Hitchhiker.USER} `+
+					`WHERE ${dbColumns.latest.Hitchhiker.BOLEIA} = ? AND ${dbColumns.latest.Hitchhiker.CANCL} <> 1`,
+					[id],
+					function(err, hitchhikers){
+						if(err)
+							return reject(err.message);
+						
+						resolve(hitchhikers);
+					}
+				);
+			});
+		},
 		getBoleiaById: (
 			id,
 			cb = (err, boleia)=>{} // eslint-disable-line handle-callback-err, no-unused-vars
@@ -100,6 +124,45 @@ let boleiaDriver = {
 				[id],
 				function(err,row){
 					return cb(err && err.message, row);
+				}
+			);
+		},
+		getAllBoleias: (cb = (err, boleias)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			db.all(
+				`SELECT uT.${dbColumns.latest.Users.NOME}, uT.${dbColumns.latest.Users.EMAIL}, bT.* FROM ${dbColumns.latest.Boleia._NAME} AS bT `+
+				`JOIN ${dbColumns.latest.Users._NAME} as uT `+
+					`ON uT.${dbColumns.latest.Users.ID} = bT.${dbColumns.latest.Boleia.CRIADOR} `+
+				`WHERE ${dbColumns.latest.Boleia.CANC} <> 1`,
+				// eslint-disable-next-line require-await
+				function(err,boleias){
+					if(err)
+						return cb(err.message);
+
+					let diderr = false;
+					let boleiasAndHitchhikersPromise = boleias.map(async (boleia)=>{
+						if(diderr)
+							return;
+
+						try {
+							// let hitchhikers;
+							let hitchhikers = await boleiaDriver.boleia.getHitchhikersInBoleiaPromised(boleia[dbColumns.latest.Boleia.ID]);
+							return {boleia, hitchhikers};
+						} catch(e){
+							diderr = true;
+							return cb(err);
+						}
+					});
+
+					if(diderr)
+						return;
+
+					Promise.all(boleiasAndHitchhikersPromise).then(
+						(resolved) => {
+							return cb(null, resolved);
+						}
+					).catch(err=>{
+						return cb(err);
+					});
 				}
 			);
 		},
@@ -334,7 +397,6 @@ let boleiaDriver = {
 				);
 			});
 		}
-
 	}
 };
 
