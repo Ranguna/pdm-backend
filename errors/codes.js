@@ -1,4 +1,4 @@
-	module.exports = {
+module.exports = {
 	passportError: {
 		userNotFound: {
 			code: -0x10001,

@@ -34,7 +34,6 @@ dbRouter.post("/initDB", (req,res)=>{
 				"origem TEXT NOT NULL,"+
 				"max_pess INTEGER NOT NULL,"+
 				"destino TEXT NOT NULL,"+
-				"duracao_prevista INTEGER NOT NULL,"+
 				"concluido NUMERIC DEFAULT 0,"+
 				"descricao TEXT DEFAULT '',"+
 				"data_criacao INTEGER NOT NULL,"+

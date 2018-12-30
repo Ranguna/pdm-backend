@@ -21,7 +21,6 @@ boleiaRouter.post("/new", auth_isLogged, account_isActive, (req,res)=>{
 		req.body.maxPessoas,
 		req.body.origem,
 		req.body.destino,
-		req.body.duracaoPrevista,
 		req.body.descricao,
 		(err,boleia)=>{
 			if(err){
@@ -30,7 +29,7 @@ boleiaRouter.post("/new", auth_isLogged, account_isActive, (req,res)=>{
 				return res.status(500).send({...boleiaErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 			}
 
-			return res.status(201).send({code:1,message:"Boleia created", boleia});
+			return res.status(201).send({code:1,message:"Boleia created", ...boleia});
 		}
 	);
 });
@@ -47,6 +46,15 @@ boleiaRouter.get("/get/:boleiaId", (req,res)=>{
 	});
 });
 
+boleiaRouter.get("/getAll", (req,res)=>{
+	boleiasDriver.boleia.getAllBoleias((err, boleias)=>{
+		if(err)
+			return res.status(500).send({...boleiaErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
+		
+		return res.send({code: 1, boleias});
+	});
+});
+
 boleiaRouter.get("/hitchhikers/:boleiaId", auth_isLogged, account_isActive, (req,res)=>{
 	if(!req.params.boleiaId)
 		return req.status(400).send(boleiaErrors.invalidBoleiaId);
@@ -54,7 +62,7 @@ boleiaRouter.get("/hitchhikers/:boleiaId", auth_isLogged, account_isActive, (req
 	boleiasDriver.boleia.getHitchhikersInBoleia(req.params.boleiaId, (err, hitchhickers)=>{
 		if(err){
 			if(err == dbError.invalidData)
-					return res.status(400).send(err);
+				return res.status(400).send(err);
 			return res.status(500).send({...boleiaErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 		}
 

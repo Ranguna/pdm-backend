@@ -76,7 +76,7 @@ module.exports = {
             "error",
             "beside"
         ],
-        "indent": "off",
+        "indent": ["error", "tab"],
         "indent-legacy": "off",
         "init-declarations": "off",
         "jsx-quotes": "error",
