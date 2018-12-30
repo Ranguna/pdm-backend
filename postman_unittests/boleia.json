@@ -154,7 +154,7 @@
 							"pm.test(\"Boleia should be created\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.code).to.eql(1);",
-							"    pm.globals.set(\"boleia_id\", jsonData.boleia.id);",
+							"    pm.globals.set(\"boleia_id\", jsonData.id);",
 							"});",
 							""
 						],
