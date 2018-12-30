@@ -143,7 +143,7 @@ let boleiaDriver = {
 						try {
 							// let hitchhikers;
 							let hitchhikers = await boleiaDriver.boleia.getHitchhikersInBoleiaPromised(boleia[dbColumns.latest.Boleia.ID]);
-							return {boleia, hitchhikers};
+							return {...boleia, hitchhikers};
 						} catch(e){
 							diderr = true;
 							return cb(err);
