@@ -155,7 +155,10 @@ let boleiaDriver = {
 
 					Promise.all(boleiasAndHitchhikersPromise).then(
 						(resolved) => {
-							return cb(null, resolved);
+							return cb(null, resolved.reduce((pv,cv,index)=>{
+								pv["boleia"+index] = cv;
+								return pv;
+							},{}));
 						}
 					).catch(err=>{
 						return cb(err);
