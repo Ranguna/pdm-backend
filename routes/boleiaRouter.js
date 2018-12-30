@@ -29,7 +29,7 @@ boleiaRouter.post("/new", auth_isLogged, account_isActive, (req,res)=>{
 				return res.status(500).send({...boleiaErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
 			}
 
-			return res.status(201).send({code:1,message:"Boleia created", boleia});
+			return res.status(201).send({code:1,message:"Boleia created", ...boleia});
 		}
 	);
 });
