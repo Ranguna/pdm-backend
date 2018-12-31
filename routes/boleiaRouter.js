@@ -166,5 +166,17 @@ boleiaRouter.delete("/leave/:boleiaId", auth_isLogged, account_isActive, (req,re
 	});
 });
 
+boleiaRouter.delete("/search", auth_isLogged, account_isActive, (req,res)=>{
+	if(!req.body.maxRadius || !req.body.origin || !req.body.destination)
+		return req.status(400).send(boleiaErrors.invalidRequestBody);
+	
+	boleiasDriver.boleia.getCloseBoleias(req.body.maxRadius, req.body.origin, req.body.destination, (err,boleias)=>{
+		if(err == boleiaErrors.userNotInBoleia)
+			return res.status(500).send({...boleiaErrors.unexptedError,...(leakInternalErrors?{internalErrors: err}:{})});
+
+		return res.send({code: 1, boleias});
+	});
+});
+
 
 module.exports = boleiaRouter;
