@@ -2,6 +2,8 @@
 const {db, dbColumns} = require("./dbconfs");
 const userDriver = require("./userDriver");
 
+const {computeDistanceBetween} = require("spherical-geometry-js");
+
 const {dbError, boleiaErrors, passportError} = require("../errors/codes");
 const {leakInternalErrors} = require("../config/globals");
 
@@ -391,6 +393,29 @@ let boleiaDriver = {
 					function(err){
 						return cb(err && err.message, this.changes != 0);
 					}
+				);
+			});
+		},
+
+		getCloseBoleias: (maxRadius, origin, destination, cb=(err,boleias)=>{})=>{ // eslint-disable-line handle-callback-err, no-unused-vars
+			if(!maxRadius || !origin || !destination)
+				return cb(boleiaErrors.invalidRequestBody);
+
+			// if(/^\d+(\.\d+){0,1}:\d+(\.\d+){0,1}$/u.test(origin))
+			// 	return cb(boleiaErrors.invalidCoordinate);
+			
+			return boleiaDriver.boleia.getAllBoleias((err, boleias)=>{
+				if(err)
+					return cb(err);
+
+				return cb(null,
+					boleias.filter((boleia)=>{
+						return (
+							computeDistanceBetween(origin.split(":"), boleia[dbColumns.latest.Boleia.ORIGEM].split(":")) <= maxRadius*1000 &&
+							boleia[dbColumns.latest.Boleia.DEST] == destination &&
+							boleia.hitchhikers.length < boleia[dbColumns.latest.Boleia.MAXPESS]
+						);
+					})
 				);
 			});
 		}
