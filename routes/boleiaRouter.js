@@ -166,7 +166,7 @@ boleiaRouter.delete("/leave/:boleiaId", auth_isLogged, account_isActive, (req,re
 	});
 });
 
-boleiaRouter.delete("/search", auth_isLogged, account_isActive, (req,res)=>{
+boleiaRouter.get("/search", auth_isLogged, account_isActive, (req,res)=>{
 	if(!req.body.maxRadius || !req.body.origin || !req.body.destination)
 		return req.status(400).send(boleiaErrors.invalidRequestBody);
 	
